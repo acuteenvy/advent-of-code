@@ -139,7 +139,6 @@ impl FromStr for ElfCubes {
     }
 }
 
-#[derive(Clone)]
 struct Game {
     id: usize,
     cube_sets: Vec<ElfCubes>,
@@ -199,10 +198,9 @@ fn main() -> Result<()> {
         .map(|l| l.parse())
         .collect::<Result<Vec<Game>>>()?;
 
-    let games2 = games.clone();
+    let sum2: usize = games.iter().map(|g| g.minimal_set().power()).sum();
     games.retain(|g| g.is_possible(FULL_SET));
-    let sum1: usize = games.into_iter().map(|x| x.id).sum();
-    let sum2: usize = games2.into_iter().map(|g| g.minimal_set().power()).sum();
+    let sum1: usize = games.iter().map(|x| x.id).sum();
 
     writeln!(
         io::stdout(),
